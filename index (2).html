@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kerem Edepli</title>
+  <meta name="description" content="Kerem Edepli, NYU student and intern at fomo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --card: #141821;
+      --line: #242a36;
+      --text: #f3f4f7;
+      --muted: #9aa1b0;
+      --violet: #7c5cfc;
+      --green: #5fd3a8;
+      --font: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(60rem 30rem at 100% -10%, rgba(124, 92, 252, 0.16), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--violet); outline-offset: 4px; border-radius: 6px; }
+
+    .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+
+    header { padding: 1.5rem 0; }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.03em; }
+    .logo span { color: var(--violet); }
+    .nav-link { font-size: 1.15rem; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+    .nav-link:hover { border-color: var(--violet); }
+
+    .hero { padding: 5rem 0 2.5rem; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(20, 24, 33, 0.6);
+    }
+    .pill i {
+      width: 0.75rem; height: 0.75rem; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+    h1 {
+      font-size: clamp(3rem, 9vw, 6.25rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      font-weight: 800;
+      margin: 1.75rem 0 1.75rem;
+      max-width: 14ch;
+    }
+    h1 .grad {
+      background: linear-gradient(90deg, var(--violet) 0%, #5a9fd4 55%, var(--green) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lede { font-size: 1.6rem; color: var(--muted); max-width: 26ch; margin: 0; line-height: 1.55; }
+
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 22rem)); gap: 1.4rem; margin-top: 3.5rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 1.6rem;
+      padding: 2.1rem 2.2rem;
+    }
+    .label {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 1.4rem;
+    }
+    .card h2 { font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 0.5rem; font-weight: 800; }
+    .card p.meta { margin: 0; color: var(--muted); font-size: 1.2rem; }
+
+    .project {
+      display: block;
+      margin-top: 1.4rem;
+      background: linear-gradient(135deg, #25213f 0%, #171a24 70%);
+      border: 1px solid var(--line);
+      border-radius: 1.6rem;
+      padding: 2.1rem 2.2rem;
+      transition: border-color 0.2s;
+    }
+    .project:hover { border-color: var(--violet); }
+    .project h2 { font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 0.6rem; font-weight: 800; }
+    .project p.meta { margin: 0; color: var(--muted); font-size: 1.2rem; }
+
+    footer { padding: 3rem 0 3.5rem; color: var(--muted); }
+
+    @media (max-width: 48rem) {
+      .hero { padding-top: 3rem; }
+      .cards { grid-template-columns: 1fr; margin-top: 2.5rem; }
+      .lede { font-size: 1.25rem; }
+      .card, .project { padding: 1.6rem; }
+      .card h2, .project h2 { font-size: 1.5rem; }
+      .card p.meta, .project p.meta { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="logo" href="#" aria-label="Kerem Edepli, home">KE<span>.</span></a>
+      <!-- EDIT: your GitHub profile URL -->
+      <a class="nav-link" href="https://github.com/your-handle">GitHub</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <!-- EDIT: status line -->
+      <div class="pill"><i aria-hidden="true"></i>Currently interning at fomo</div>
+      <h1>Hi, I'm <span class="grad">Kerem Edepli</span></h1>
+      <!-- EDIT: your one-line intro -->
+      <p class="lede">NYU student and intern at fomo, a crypto trading platform.</p>
+
+      <div class="cards">
+        <div class="card">
+          <p class="label">Role</p>
+          <h2>Intern</h2>
+          <p class="meta">fomo &middot; Crypto trading</p>
+        </div>
+        <div class="card">
+          <p class="label">Education</p>
+          <h2>NYU</h2>
+          <p class="meta">New York University</p>
+        </div>
+      </div>
+
+      <!-- EDIT: point this at a real project (link + title + one line) -->
+      <a class="project" href="#">
+        <p class="label">Project</p>
+        <h2>fomo intern desk &rarr;</h2>
+        <p class="meta">Schedules, coverage and reimbursements for the intern team</p>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Contact: <a href="mailto:ke33@nyu.edu">ke33@nyu.edu</a></div>
+  </footer>
+</body>
+</html>
