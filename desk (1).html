@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<title>Intern desk · Kerem Edepli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --card: #141821;
+    --card2: #1a1f2b;
+    --line: #242a36;
+    --text: #f3f4f7;
+    --muted: #9aa1b0;
+    --violet: #7c5cfc;
+    --violet-soft: rgba(124, 92, 252, 0.16);
+    --green: #5fd3a8;
+    --green-soft: rgba(95, 211, 168, 0.14);
+    --amber: #f2b45a;
+    --red: #ff7b72;
+    --fomo: #221d4b;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 5rem); }
+  *, *::before, *::after { box-sizing: inherit; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text); font: 15px/1.5 var(--font);
+    -webkit-font-smoothing: antialiased;
+    background: radial-gradient(60rem 30rem at 100% -10%, rgba(124, 92, 252, 0.14), transparent 60%), var(--bg);
+  }
+  a { color: inherit; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+
+  button {
+    border: 1px solid var(--line); background: var(--card2); border-radius: 999px;
+    padding: 0.5rem 1rem; cursor: pointer; font-weight: 500;
+  }
+  button:hover { border-color: var(--violet); }
+  button.primary { background: var(--violet); border-color: var(--violet); color: #fff; font-weight: 600; }
+  button.primary:hover { background: #8d71ff; }
+  button.small { padding: 0.25rem 0.7rem; font-size: 0.85rem; }
+  button.ghost { background: transparent; }
+  button.danger { color: var(--red); }
+  button.danger.armed { background: var(--red); border-color: var(--red); color: var(--bg); }
+  input, select, textarea {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 0.55rem 0.75rem; width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--violet); outline: none; }
+  textarea { min-height: 4.5rem; resize: vertical; }
+
+  .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* top bar */
+  .top {
+    position: sticky; top: 0; z-index: 5;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgba(11, 13, 18, 0.82); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; gap: 1rem; height: 4.25rem; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; font-weight: 800; letter-spacing: -0.02em; font-size: 1.1rem; }
+  .brand .sub { color: var(--muted); font-weight: 500; }
+  .mark { width: 2.4rem; height: 2.4rem; border-radius: 50%; overflow: hidden; background: #000; flex: none; border: 1px solid var(--line); }
+  .mark video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tabs { display: flex; gap: 0.25rem; margin-left: auto; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 0.25rem; }
+  .tabs button { border: 0; background: transparent; color: var(--muted); padding: 0.4rem 0.95rem; }
+  .tabs button[aria-current="page"] { background: var(--violet-soft); color: var(--text); }
+  .home { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .home:hover { color: var(--text); border-color: var(--violet); }
+
+  main.wrap { padding-top: 2.5rem; padding-bottom: 4rem; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 0.5rem; font-weight: 800; }
+  .lede { color: var(--muted); margin: 0; font-size: 1.1rem; max-width: 44ch; }
+  h2 { font-size: 1.1rem; letter-spacing: -0.01em; margin: 0; font-weight: 600; }
+  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .muted { color: var(--muted); }
+  .empty { color: var(--muted); margin: 0; }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 1.4rem; padding: 1.4rem 1.5rem; }
+  .row2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; margin-bottom: 1.1rem; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 1.4rem; padding: 1.2rem 1.4rem; }
+  .stat .n { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .stat .l { color: var(--muted); }
+  .stat.violet .n { color: #a58fff; }
+  .stat.green .n { color: var(--green); }
+  .stat.amber .n { color: var(--amber); }
+
+  /* today */
+  .today-list { display: grid; gap: 0.5rem; }
+  .today-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border: 1px solid var(--line); border-radius: 0.9rem; }
+  .today-item .who { font-weight: 600; }
+  .today-item .when { color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+  .now { font-size: 0.78rem; font-weight: 600; color: var(--green); background: var(--green-soft); border-radius: 999px; padding: 0.1rem 0.55rem; }
+
+  .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; flex: none; }
+  .dot.office { background: var(--violet); }
+  .dot.remote { background: var(--green); }
+  .legend { display: flex; gap: 1rem; color: var(--muted); font-size: 0.875rem; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+  /* coverage */
+  .cov { display: grid; grid-template-columns: repeat(13, 1fr); gap: 0.3rem; align-items: end; height: 7rem; margin-top: 0.5rem; }
+  .cov div { background: var(--violet-soft); border-radius: 0.4rem 0.4rem 0.15rem 0.15rem; min-height: 0.3rem; position: relative; }
+  .cov div.on { background: var(--violet); }
+  .cov-labels { display: grid; grid-template-columns: repeat(13, 1fr); gap: 0.3rem; color: var(--muted); font-size: 0.72rem; margin-top: 0.4rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+  /* hours bars */
+  .bars { display: grid; gap: 0.8rem; }
+  .bar-row { display: grid; grid-template-columns: 6.5rem 1fr 4.5rem; gap: 0.75rem; align-items: center; }
+  .bar-row .nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track { position: relative; height: 0.75rem; background: var(--card2); border-radius: 999px; overflow: hidden; }
+  .track .last { position: absolute; inset: 0 auto 0 0; background: rgba(154, 161, 176, 0.25); border-radius: 999px; }
+  .track .this { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, var(--violet), #5a9fd4); border-radius: 999px; }
+  .bar-row .hrs { text-align: right; font-variant-numeric: tabular-nums; }
+  .bar-row .hrs small { display: block; color: var(--muted); font-size: 0.75rem; }
+
+  /* week */
+  .weeknav { display: flex; align-items: center; gap: 0.4rem; }
+  .weeknav .range { min-width: 10.5rem; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.6rem; }
+  .day { background: var(--bg); border: 1px solid var(--line); border-radius: 1rem; padding: 0.7rem; min-height: 9rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .day.is-today { border-color: var(--violet); box-shadow: inset 0 0 0 1px var(--violet); }
+  .day-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .day-head .dn { color: var(--muted); font-size: 0.85rem; }
+  .day-head .dd { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; }
+  .day.is-today .dn { color: #a58fff; }
+  .shift { text-align: left; border-radius: 0.7rem; padding: 0.4rem 0.55rem; border: 1px solid transparent; font-size: 0.82rem; line-height: 1.35; width: 100%; }
+  .shift.office { background: var(--violet-soft); }
+  .shift.remote { background: var(--green-soft); }
+  .shift:hover { border-color: var(--violet); }
+  .shift b { display: block; font-weight: 600; font-size: 0.85rem; }
+  .shift span { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .add-day { margin-top: auto; border: 1px dashed var(--line); background: transparent; color: var(--muted); border-radius: 0.7rem; padding: 0.3rem; font-size: 0.85rem; }
+  .add-day:hover { color: var(--text); }
+
+  /* reimbursements */
+  .tools { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  .seg { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 0.2rem; }
+  .seg button { border: 0; background: transparent; color: var(--muted); padding: 0.35rem 0.85rem; font-size: 0.9rem; }
+  .seg button[aria-pressed="true"] { background: var(--card2); color: var(--text); }
+  .spacer { margin-left: auto; }
+  .listwrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 40rem; }
+  th, td { text-align: left; padding: 0.75rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { color: var(--muted); font-weight: 500; font-size: 0.85rem; }
+  td.amt, th.amt { text-align: right; font-variant-numeric: tabular-nums; }
+  td.amt { font-weight: 600; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover td { background: rgba(124, 92, 252, 0.05); }
+  .merchant { font-weight: 600; }
+  .merchant small { display: block; color: var(--muted); font-weight: 400; }
+  .status { font-size: 0.8rem; font-weight: 600; border-radius: 999px; padding: 0.15rem 0.65rem; white-space: nowrap; border: 1px solid currentColor; }
+  .status.Draft { color: var(--muted); }
+  .status.Submitted { color: var(--amber); }
+  .status.Approved { color: #a58fff; }
+  .status.Paid { color: var(--green); }
+  .status.Rejected { color: var(--red); }
+  .next-step { white-space: nowrap; }
+
+  /* dialogs */
+  dialog { border: 1px solid var(--line); border-radius: 1.4rem; padding: 0; background: var(--card); color: var(--text); width: min(34rem, calc(100vw - 2rem)); }
+  dialog::backdrop { background: rgba(5, 6, 10, 0.7); backdrop-filter: blur(3px); }
+  .dlg { padding: 1.5rem; display: grid; gap: 0.9rem; }
+  .dlg h3 { margin: 0; font-size: 1.35rem; letter-spacing: -0.02em; }
+  .dlg label { display: grid; gap: 0.3rem; color: var(--muted); font-size: 0.875rem; }
+  .dlg .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .dlg .row3 { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 0.75rem; }
+  .foot { display: flex; gap: 0.5rem; align-items: center; justify-content: flex-end; margin-top: 0.25rem; }
+  .foot .danger { margin-right: auto; }
+  .msg { color: var(--muted); font-size: 0.875rem; margin: 0; }
+  .msg.err { color: var(--red); }
+  #dataText { min-height: 10rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; }
+
+  /* name picker */
+  .whoami { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .whoami .muted { font-size: 0.95rem; }
+  .names { background: var(--card); }
+  .names button { padding: 0.4rem 1rem; font-size: 0.95rem; }
+  .names button[aria-pressed="true"] { background: var(--violet); color: #fff; }
+  .shift.mine { box-shadow: inset 3px 0 0 var(--violet); }
+  .shift.remote.mine { box-shadow: inset 3px 0 0 var(--green); }
+  .bar-row.me .nm { color: #a58fff; }
+  .today-item.me .who { color: #a58fff; }
+
+  .foot-note { margin-top: 2rem; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; }
+  .foot-note button { font-size: 0.9rem; }
+
+  @media (max-width: 62rem) {
+    .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (max-width: 48rem) {
+    .top .wrap { height: auto; padding-top: 0.7rem; padding-bottom: 0.7rem; flex-wrap: wrap; }
+    .tabs { margin-left: 0; order: 3; width: 100%; }
+    .tabs button { flex: 1; }
+    .brand .sub { display: none; }
+    .home { margin-left: auto; }
+    main.wrap { padding-top: 1.75rem; }
+    .row2, .stats { grid-template-columns: 1fr; }
+    .week { grid-template-columns: 1fr; }
+    .day { min-height: 0; }
+    .panel { padding: 1.1rem; }
+    .dlg .row, .dlg .row3 { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 5rem 1fr 4rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="desk.html" aria-label="fomo intern desk">
+      <span class="mark"><video id="mark" src="fomo-blink-mark.mp4" poster="fomo-blink-mark.jpg" autoplay muted loop playsinline aria-hidden="true"></video></span>
+      <span>fomo <span class="sub">intern desk</span></span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <button type="button" data-tab="schedule">Schedule</button>
+      <button type="button" data-tab="reimb">Reimbursements</button>
+    </nav>
+    <a class="home" href="index.html">Kerem Edepli</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="whoami">
+    <span class="muted" id="namePickLbl">I'm</span>
+    <div class="seg names" id="namePick" role="group" aria-labelledby="namePickLbl"></div>
+    <span class="muted">New shifts and requests go under this name.</span>
+  </div>
+
+  <!-- SCHEDULE -->
+  <section id="tab-schedule" aria-labelledby="h-schedule">
+    <div class="head">
+      <div>
+        <h1 id="h-schedule">Schedule</h1>
+        <p class="lede">Who's in, who's remote, and how the hours stack up this week.</p>
+      </div>
+      <button type="button" class="primary" id="btnAddShift">Add shift</button>
+    </div>
+
+    <div class="row2">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Today</h2>
+          <div class="legend"><span><i class="dot office"></i>Office</span><span><i class="dot remote"></i>Remote</span></div>
+        </div>
+        <div id="todayList" class="today-list"></div>
+        <div id="covWrap">
+          <div id="cov" class="cov" role="img" aria-label="Interns on shift per hour today"></div>
+          <div id="covLabels" class="cov-labels" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Hours this week</h2>
+          <span class="muted" style="font-size:.875rem">Grey is last week</span>
+        </div>
+        <div id="bars" class="bars"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Week</h2>
+        <div class="weeknav">
+          <button type="button" class="small ghost" id="prevWeek" aria-label="Previous week">&larr;</button>
+          <span class="range" id="weekRange"></span>
+          <button type="button" class="small ghost" id="nextWeek" aria-label="Next week">&rarr;</button>
+          <button type="button" class="small" id="thisWeek">This week</button>
+        </div>
+      </div>
+      <div id="week" class="week"></div>
+    </div>
+  </section>
+
+  <!-- REIMBURSEMENTS -->
+  <section id="tab-reimb" hidden aria-labelledby="h-reimb">
+    <div class="head">
+      <div>
+        <h1 id="h-reimb">Reimbursements</h1>
+        <p class="lede">Log what you paid for, then track it from submitted to paid.</p>
+      </div>
+      <button type="button" class="primary" id="btnAddReimb">New request</button>
+    </div>
+
+    <div class="stats" id="rStats"></div>
+
+    <div class="panel">
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Filter by status" id="rFilter"></div>
+        <button type="button" class="small spacer" id="btnCsv">Download CSV</button>
+      </div>
+      <p id="rEmpty" class="empty" hidden></p>
+      <div class="listwrap" id="rWrap">
+        <table>
+          <thead><tr><th>Date</th><th>What</th><th>Who</th><th>Status</th><th class="amt">Amount</th><th><span class="muted" style="font-weight:400">Next step</span></th></tr></thead>
+          <tbody id="rRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot-note">
+    <span>Saved in this browser on this device only.</span>
+    <button type="button" class="small ghost" id="btnData">Backup and restore</button>
+  </div>
+</main>
+
+<!-- shift dialog -->
+<dialog id="shiftDlg" aria-labelledby="shiftTitle">
+  <form class="dlg" id="shiftForm" autocomplete="off">
+    <h3 id="shiftTitle">Add shift</h3>
+    <div class="row">
+      <label>Who<select id="sWho" required></select></label>
+      <label>Date<input id="sDate" type="date" required></label>
+    </div>
+    <div class="row3">
+      <label>Where<select id="sWhere"><option value="office">Office</option><option value="remote">Remote</option></select></label>
+      <label>Start<input id="sStart" type="time" required value="10:00"></label>
+      <label>End<input id="sEnd" type="time" required value="18:00"></label>
+    </div>
+    <label>Note<input id="sNote" placeholder="Optional, e.g. covering outreach"></label>
+    <label style="grid-template-columns:auto 1fr;align-items:center;color:var(--text)" id="repeatLbl">
+      <input id="sRepeat" type="checkbox" style="width:auto"> Repeat on the same weekday for the next 3 weeks
+    </label>
+    <p id="shiftMsg" class="msg" role="status"></p>
+    <div class="foot">
+      <button type="button" class="danger" id="sDelete">Delete</button>
+      <button type="button" id="sCancel">Cancel</button>
+      <button type="submit" class="primary">Save shift</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- reimbursement dialog -->
+<dialog id="reimbDlg" aria-labelledby="reimbTitle">
+  <form class="dlg" id="reimbForm" autocomplete="off">
+    <h3 id="reimbTitle">New request</h3>
+    <div class="row">
+      <label>Merchant<input id="rMerchant" required placeholder="e.g. Uber, Joe Coffee"></label>
+      <label>Amount (USD)<input id="rAmount" type="number" inputmode="decimal" min="0" step="0.01" required placeholder="0.00"></label>
+    </div>
+    <div class="row">
+      <label>Date spent<input id="rDate" type="date" required></label>
+      <label>Category<select id="rCat"></select></label>
+    </div>
+    <div class="row">
+      <label>Who<select id="rWho" required></select></label>
+      <label>Status<select id="rStatus"></select></label>
+    </div>
+    <label>Receipt link<input id="rReceipt" type="url" placeholder="Drive or Dropbox link to the photo"></label>
+    <label>What was it for<textarea id="rNote" placeholder="e.g. Car to the Series A founder meetup in Flatiron"></textarea></label>
+    <div class="foot">
+      <button type="button" class="danger" id="rDelete">Delete</button>
+      <button type="button" id="rCancel">Cancel</button>
+      <button type="submit" class="primary">Save request</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- data dialog -->
+<dialog id="dataDlg" aria-labelledby="dataTitle">
+  <div class="dlg">
+    <h3 id="dataTitle">Backup and restore</h3>
+    <p class="msg">Shifts and requests live in this browser only. Copy a backup now and then, or paste one in to restore it on another device.</p>
+    <textarea id="dataText" spellcheck="false" aria-label="Backup text"></textarea>
+    <p id="dataMsg" class="msg" role="status"></p>
+    <div class="foot">
+      <button type="button" class="danger" id="btnRestore">Restore from text</button>
+      <button type="button" id="btnCopy">Copy</button>
+      <button type="button" class="primary" id="btnDataClose">Done</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var KEY = 'fomo-desk-v1';
+  var TEAM = ['Bijan', 'Milo', 'Hammaad', 'Kerem'];
+  var ME_DEFAULT = 'Kerem';
+  var CATS = ['Meals', 'Transport', 'Events', 'Software', 'Office supplies', 'Other'];
+  var STATUSES = ['Draft', 'Submitted', 'Approved', 'Paid', 'Rejected'];
+  var NEXT = { Draft: 'Submitted', Submitted: 'Approved', Approved: 'Paid' };
+  var NEXT_LABEL = { Draft: 'Mark submitted', Submitted: 'Mark approved', Approved: 'Mark paid' };
+  var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var COV_FROM = 8, COV_TO = 20; // 8am to 8pm
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = load();
+  var weekStart = mondayOf(new Date());
+  var rFilter = 'Open';
+  var editingShift = null, editingReimb = null;
+
+  /* storage */
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var d = JSON.parse(raw);
+        return { shifts: d.shifts || [], reimb: d.reimb || [], me: d.me || ME_DEFAULT };
+      }
+    } catch (e) {}
+    return { shifts: [], reimb: [], me: ME_DEFAULT };
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* helpers */
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function parse(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function mondayOf(d) { var x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); var w = (x.getDay() + 6) % 7; return addDays(x, -w); }
+  function fmtDay(s) { var d = parse(s); return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function mins(t) { var p = t.split(':'); return +p[0] * 60 + +p[1]; }
+  function fmtT(t) {
+    var m = mins(t), h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? 'pm' : 'am';
+    h = h % 12 || 12; return h + (mm ? ':' + pad(mm) : '') + ap;
+  }
+  function hours(s) { var a = mins(s.start), b = mins(s.end); if (b <= a) b += 1440; return (b - a) / 60; }
+  function fmtH(h) { return (Math.round(h * 10) / 10) + 'h'; }
+  function money(c) { return '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function people() {
+    // the team first, then anyone older data mentions
+    var extra = {};
+    state.shifts.forEach(function (s) { extra[s.who] = 1; });
+    state.reimb.forEach(function (r) { extra[r.who] = 1; });
+    return TEAM.concat(Object.keys(extra).filter(function (n) { return TEAM.indexOf(n) < 0; }).sort());
+  }
+  function inRange(s, from, to) { return s.date >= from && s.date <= to; }
+
+  /* tabs */
+  function setTab(t) {
+    ['schedule', 'reimb'].forEach(function (k) { $('tab-' + k).hidden = k !== t; });
+    document.querySelectorAll('.tabs button').forEach(function (b) {
+      if (b.dataset.tab === t) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    try { history.replaceState(null, '', '#' + t); } catch (e) {}
+    render();
+  }
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () { setTab(b.dataset.tab); });
+  });
+
+  /* ---------- schedule ---------- */
+  function renderToday() {
+    var t = ymd(new Date()), now = new Date(), nowM = now.getHours() * 60 + now.getMinutes();
+    var list = $('todayList'); list.textContent = '';
+    var todays = state.shifts.filter(function (s) { return s.date === t; })
+      .sort(function (a, b) { return a.start < b.start ? -1 : 1; });
+    if (!todays.length) {
+      list.appendChild(el('p', 'empty', 'Nobody is on the schedule today.'));
+      $('covWrap').hidden = true;
+      return;
+    }
+    todays.forEach(function (s) {
+      var row = el('div', 'today-item' + (s.who === state.me ? ' me' : ''));
+      row.appendChild(el('i', 'dot ' + s.where));
+      row.appendChild(el('span', 'who', s.who));
+      var a = mins(s.start), b = mins(s.end); if (b <= a) b += 1440;
+      if (nowM >= a && nowM < b) row.appendChild(el('span', 'now', 'On now'));
+      row.appendChild(el('span', 'when', fmtT(s.start) + ' to ' + fmtT(s.end)));
+      list.appendChild(row);
+    });
+    $('covWrap').hidden = false;
+    var cov = $('cov'), labels = $('covLabels'); cov.textContent = ''; labels.textContent = '';
+    var counts = [], max = 1;
+    for (var h = COV_FROM; h <= COV_TO; h++) {
+      var slotA = h * 60, slotB = slotA + 60;
+      var n = todays.filter(function (s) { var a = mins(s.start), b = mins(s.end); if (b <= a) b += 1440; return a < slotB && b > slotA; }).length;
+      counts.push(n); if (n > max) max = n;
+    }
+    counts.forEach(function (n, i) {
+      var h = COV_FROM + i, bar = el('div', h === now.getHours() ? 'on' : '');
+      bar.style.height = (n ? Math.max(12, n / max * 100) : 4) + '%';
+      bar.title = n + ' on shift at ' + fmtT(pad(h) + ':00');
+      cov.appendChild(bar);
+      labels.appendChild(el('span', null, i % 2 === 0 ? ((h % 12 || 12) + (h < 12 ? 'a' : 'p')) : ''));
+    });
+    cov.setAttribute('aria-label', 'Interns on shift per hour today, peak of ' + max);
+  }
+
+  function renderBars() {
+    var ws = mondayOf(new Date()), we = addDays(ws, 6), ls = addDays(ws, -7), le = addDays(ws, -1);
+    var f1 = ymd(ws), t1 = ymd(we), f0 = ymd(ls), t0 = ymd(le);
+    var tot = {};
+    TEAM.forEach(function (n) { tot[n] = { now: 0, last: 0 }; });
+    state.shifts.forEach(function (s) {
+      if (!tot[s.who]) tot[s.who] = { now: 0, last: 0 };
+      if (inRange(s, f1, t1)) tot[s.who].now += hours(s);
+      else if (inRange(s, f0, t0)) tot[s.who].last += hours(s);
+    });
+    var names = Object.keys(tot).filter(function (k) { return TEAM.indexOf(k) >= 0 || tot[k].now || tot[k].last; })
+      .sort(function (a, b) { return tot[b].now - tot[a].now; });
+    var box = $('bars'); box.textContent = '';
+    var max = Math.max.apply(null, names.map(function (n) { return Math.max(tot[n].now, tot[n].last); })) || 1;
+    names.forEach(function (n) {
+      var r = el('div', 'bar-row' + (n === state.me ? ' me' : ''));
+      r.appendChild(el('span', 'nm', n));
+      var tr = el('div', 'track'), l = el('span', 'last'), c = el('span', 'this');
+      l.style.width = (tot[n].last / max * 100) + '%'; c.style.width = (tot[n].now / max * 100) + '%';
+      tr.appendChild(l); tr.appendChild(c); r.appendChild(tr);
+      var h = el('span', 'hrs', fmtH(tot[n].now)); h.appendChild(el('small', null, 'last ' + fmtH(tot[n].last)));
+      r.appendChild(h);
+      box.appendChild(r);
+    });
+  }
+
+  function renderWeek() {
+    var end = addDays(weekStart, 6), t = ymd(new Date());
+    $('weekRange').textContent = MONTHS[weekStart.getMonth()] + ' ' + weekStart.getDate() + ' to ' +
+      (end.getMonth() !== weekStart.getMonth() ? MONTHS[end.getMonth()] + ' ' : '') + end.getDate();
+    $('thisWeek').hidden = ymd(weekStart) === ymd(mondayOf(new Date()));
+    var box = $('week'); box.textContent = '';
+    for (var i = 0; i < 7; i++) {
+      (function (i) {
+        var d = addDays(weekStart, i), ds = ymd(d);
+        var day = el('div', 'day' + (ds === t ? ' is-today' : ''));
+        var hd = el('div', 'day-head');
+        hd.appendChild(el('span', 'dn', DAYS[i]));
+        hd.appendChild(el('span', 'dd', String(d.getDate())));
+        day.appendChild(hd);
+        state.shifts.filter(function (s) { return s.date === ds; })
+          .sort(function (a, b) { return a.start < b.start ? -1 : 1; })
+          .forEach(function (s) {
+            var b = el('button', 'shift ' + s.where + (s.who === state.me ? ' mine' : '')); b.type = 'button';
+            b.appendChild(el('b', null, s.who));
+            b.appendChild(el('span', null, fmtT(s.start) + ' to ' + fmtT(s.end) + (s.where === 'remote' ? ', remote' : '')));
+            b.setAttribute('aria-label', s.who + ', ' + DAYS[i] + ' ' + fmtT(s.start) + ' to ' + fmtT(s.end) + ', ' + s.where + '. Edit shift');
+            b.addEventListener('click', function () { openShift(s.id); });
+            day.appendChild(b);
+          });
+        var add = el('button', 'add-day', '+ Add'); add.type = 'button';
+        add.setAttribute('aria-label', 'Add shift on ' + DAYS[i] + ' ' + fmtDay(ds));
+        add.addEventListener('click', function () { openShift(null, ds); });
+        day.appendChild(add);
+        box.appendChild(day);
+      })(i);
+    }
+  }
+
+  $('prevWeek').addEventListener('click', function () { weekStart = addDays(weekStart, -7); renderWeek(); });
+  $('nextWeek').addEventListener('click', function () { weekStart = addDays(weekStart, 7); renderWeek(); });
+  $('thisWeek').addEventListener('click', function () { weekStart = mondayOf(new Date()); renderWeek(); });
+
+  function openShift(id, date) {
+    var s = id ? state.shifts.find(function (x) { return x.id === id; }) : null;
+    editingShift = s;
+    $('shiftTitle').textContent = s ? 'Edit shift' : 'Add shift';
+    fillPeople();
+    $('sWho').value = s ? s.who : state.me;
+    $('sDate').value = s ? s.date : (date || ymd(new Date()));
+    $('sWhere').value = s ? s.where : 'office';
+    $('sStart').value = s ? s.start : '10:00';
+    $('sEnd').value = s ? s.end : '18:00';
+    $('sNote').value = s ? (s.note || '') : '';
+    $('sRepeat').checked = false;
+    $('repeatLbl').hidden = !!s;
+    $('sDelete').hidden = !s; $('sDelete').classList.remove('armed'); $('sDelete').textContent = 'Delete';
+    $('shiftMsg').textContent = ''; $('shiftMsg').className = 'msg';
+    fillPeople();
+    $('shiftDlg').showModal();
+  }
+  $('btnAddShift').addEventListener('click', function () { openShift(null); });
+  $('sCancel').addEventListener('click', function () { $('shiftDlg').close(); });
+  $('sDelete').addEventListener('click', function () {
+    var b = $('sDelete');
+    if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = 'Confirm delete'; return; }
+    state.shifts = state.shifts.filter(function (x) { return x !== editingShift; });
+    save(); $('shiftDlg').close(); render();
+  });
+  $('shiftForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var who = $('sWho').value.trim();
+    if (!who) return;
+    if ($('sStart').value === $('sEnd').value) {
+      $('shiftMsg').textContent = 'Start and end are the same time. Pick an end time after the start.';
+      $('shiftMsg').className = 'msg err'; return;
+    }
+    var data = { who: who, date: $('sDate').value, where: $('sWhere').value, start: $('sStart').value, end: $('sEnd').value, note: $('sNote').value.trim() };
+    if (editingShift) Object.assign(editingShift, data);
+    else {
+      var reps = $('sRepeat').checked ? 4 : 1;
+      for (var i = 0; i < reps; i++) {
+        state.shifts.push(Object.assign({ id: uid() }, data, { date: ymd(addDays(parse(data.date), 7 * i)) }));
+      }
+    }
+    save(); $('shiftDlg').close();
+    weekStart = mondayOf(parse(data.date));
+    render();
+  });
+
+  /* ---------- reimbursements ---------- */
+  var FILTERS = ['Open', 'Paid', 'All'];
+  function isOpen(r) { return r.status !== 'Paid' && r.status !== 'Rejected'; }
+
+  function renderReimbStats() {
+    var submitted = 0, approved = 0, paidMonth = 0, m = ymd(new Date()).slice(0, 7);
+    state.reimb.forEach(function (r) {
+      if (r.status === 'Submitted') submitted += r.cents;
+      if (r.status === 'Approved') approved += r.cents;
+      if (r.status === 'Paid' && (r.paidOn || r.date).slice(0, 7) === m) paidMonth += r.cents;
+    });
+    var box = $('rStats'); box.textContent = '';
+    [['amber', money(submitted), 'Waiting on approval'],
+     ['violet', money(approved), 'Approved, not paid yet'],
+     ['green', money(paidMonth), 'Paid back this month']].forEach(function (t) {
+      var s = el('div', 'stat ' + t[0]);
+      s.appendChild(el('div', 'n', t[1])); s.appendChild(el('div', 'l', t[2]));
+      box.appendChild(s);
+    });
+  }
+
+  function renderFilter() {
+    var seg = $('rFilter'); seg.textContent = '';
+    FILTERS.forEach(function (f) {
+      var n = state.reimb.filter(function (r) { return f === 'All' || (f === 'Open' ? isOpen(r) : r.status === 'Paid'); }).length;
+      var b = el('button', null, f + (n ? ' ' + n : '')); b.type = 'button';
+      b.setAttribute('aria-pressed', String(f === rFilter));
+      b.addEventListener('click', function () { rFilter = f; renderReimb(); });
+      seg.appendChild(b);
+    });
+  }
+
+  function renderReimb() {
+    renderReimbStats(); renderFilter();
+    var list = state.reimb.filter(function (r) {
+      return rFilter === 'All' || (rFilter === 'Open' ? isOpen(r) : r.status === 'Paid');
+    }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var body = $('rRows'); body.textContent = '';
+    $('rWrap').hidden = !list.length; $('rEmpty').hidden = !!list.length;
+    $('btnCsv').hidden = !state.reimb.length;
+    if (!list.length) {
+      $('rEmpty').textContent = state.reimb.length
+        ? (rFilter === 'Open' ? 'Nothing waiting. Every request is paid or closed.' : 'No paid requests yet.')
+        : 'No requests yet. Log a Uber, a coffee meeting or an event ticket with New request.';
+      return;
+    }
+    list.forEach(function (r) {
+      var tr = el('tr'); tr.tabIndex = 0;
+      tr.appendChild(el('td', null, fmtDay(r.date)));
+      var w = el('td', 'merchant', r.merchant); w.appendChild(el('small', null, r.category + (r.note ? ', ' + r.note : '')));
+      tr.appendChild(w);
+      tr.appendChild(el('td', null, r.who));
+      var st = el('td'); st.appendChild(el('span', 'status ' + r.status, r.status)); tr.appendChild(st);
+      tr.appendChild(el('td', 'amt', money(r.cents)));
+      var nx = el('td', 'next-step');
+      if (NEXT[r.status]) {
+        var b = el('button', 'small', NEXT_LABEL[r.status]); b.type = 'button';
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          r.status = NEXT[r.status];
+          if (r.status === 'Paid') r.paidOn = ymd(new Date());
+          save(); renderReimb();
+        });
+        nx.appendChild(b);
+      }
+      tr.appendChild(nx);
+      tr.addEventListener('click', function () { openReimb(r.id); });
+      tr.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target === tr) openReimb(r.id); });
+      body.appendChild(tr);
+    });
+  }
+
+  function openReimb(id) {
+    var r = id ? state.reimb.find(function (x) { return x.id === id; }) : null;
+    editingReimb = r;
+    $('reimbTitle').textContent = r ? 'Edit request' : 'New request';
+    $('rMerchant').value = r ? r.merchant : '';
+    $('rAmount').value = r ? (r.cents / 100).toFixed(2) : '';
+    $('rDate').value = r ? r.date : ymd(new Date());
+    $('rCat').value = r ? r.category : 'Meals';
+    fillPeople();
+    $('rWho').value = r ? r.who : state.me;
+    $('rStatus').value = r ? r.status : 'Submitted';
+    $('rReceipt').value = r ? (r.receipt || '') : '';
+    $('rNote').value = r ? (r.note || '') : '';
+    $('rDelete').hidden = !r; $('rDelete').classList.remove('armed'); $('rDelete').textContent = 'Delete';
+    fillPeople();
+    $('reimbDlg').showModal();
+  }
+  $('btnAddReimb').addEventListener('click', function () { openReimb(null); });
+  $('rCancel').addEventListener('click', function () { $('reimbDlg').close(); });
+  $('rDelete').addEventListener('click', function () {
+    var b = $('rDelete');
+    if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = 'Confirm delete'; return; }
+    state.reimb = state.reimb.filter(function (x) { return x !== editingReimb; });
+    save(); $('reimbDlg').close(); render();
+  });
+  $('reimbForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var data = {
+      merchant: $('rMerchant').value.trim(),
+      cents: Math.round(parseFloat($('rAmount').value || '0') * 100),
+      date: $('rDate').value, category: $('rCat').value, who: $('rWho').value.trim(),
+      status: $('rStatus').value, receipt: $('rReceipt').value.trim(), note: $('rNote').value.trim()
+    };
+    if (data.status === 'Paid' && (!editingReimb || editingReimb.status !== 'Paid')) data.paidOn = ymd(new Date());
+    if (editingReimb) Object.assign(editingReimb, data);
+    else state.reimb.push(Object.assign({ id: uid() }, data));
+    save(); $('reimbDlg').close(); renderReimb();
+  });
+
+  $('btnCsv').addEventListener('click', function () {
+    var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var rows = [['Date', 'Who', 'Merchant', 'Category', 'Amount (USD)', 'Status', 'Receipt', 'Note']];
+    state.reimb.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; }).forEach(function (r) {
+      rows.push([r.date, r.who, r.merchant, r.category, (r.cents / 100).toFixed(2), r.status, r.receipt, r.note]);
+    });
+    var csv = rows.map(function (r) { return r.map(q).join(','); }).join('\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = 'fomo-reimbursements-' + ymd(new Date()) + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  });
+
+  /* ---------- shared ---------- */
+  function fillPeople() {
+    ['sWho', 'rWho'].forEach(function (id) {
+      var sel = $(id), keep = sel.value; sel.textContent = '';
+      people().forEach(function (p) { var o = el('option', null, p); o.value = p; sel.appendChild(o); });
+      if (keep) sel.value = keep;
+    });
+  }
+  CATS.forEach(function (c) { var o = el('option', null, c); o.value = c; $('rCat').appendChild(o); });
+  STATUSES.forEach(function (c) { var o = el('option', null, c); o.value = c; $('rStatus').appendChild(o); });
+
+  $('btnData').addEventListener('click', function () {
+    $('dataText').value = JSON.stringify(state, null, 2);
+    $('dataMsg').textContent = ''; $('dataMsg').className = 'msg';
+    $('btnRestore').classList.remove('armed'); $('btnRestore').textContent = 'Restore from text';
+    $('dataDlg').showModal();
+  });
+  $('btnDataClose').addEventListener('click', function () { $('dataDlg').close(); });
+  $('btnCopy').addEventListener('click', function () {
+    var t = $('dataText'); t.select();
+    var done = function () { $('dataMsg').textContent = 'Copied.'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(t.value).then(done, function () { document.execCommand('copy'); done(); });
+    else { document.execCommand('copy'); done(); }
+  });
+  $('btnRestore').addEventListener('click', function () {
+    var b = $('btnRestore');
+    var d;
+    try { d = JSON.parse($('dataText').value); } catch (e) {
+      $('dataMsg').textContent = 'That text is not a valid backup. Paste the full text from Copy, starting with {.';
+      $('dataMsg').className = 'msg err'; return;
+    }
+    if (!d || !Array.isArray(d.shifts) || !Array.isArray(d.reimb)) {
+      $('dataMsg').textContent = 'That backup is missing shifts or requests. Paste a backup made on this page.';
+      $('dataMsg').className = 'msg err'; return;
+    }
+    if (!b.classList.contains('armed')) {
+      b.classList.add('armed'); b.textContent = 'Replace everything';
+      $('dataMsg').textContent = 'This replaces all shifts and requests on this device. Press again to confirm.';
+      $('dataMsg').className = 'msg'; return;
+    }
+    state = { shifts: d.shifts, reimb: d.reimb, me: d.me || ME_DEFAULT };
+    save(); $('dataDlg').close(); render();
+  });
+
+  function renderNamePick() {
+    var box = $('namePick'); box.textContent = '';
+    TEAM.forEach(function (n) {
+      var b = el('button', null, n); b.type = 'button';
+      b.setAttribute('aria-pressed', String(n === state.me));
+      b.addEventListener('click', function () { state.me = n; save(); render(); });
+      box.appendChild(b);
+    });
+  }
+
+  function render() {
+    renderNamePick();
+    if (!$('tab-schedule').hidden) { renderToday(); renderBars(); renderWeek(); }
+    else renderReimb();
+  }
+
+  // the blinking fomo mark: hold still for reduced motion
+  var mark = $('mark');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    mark.removeAttribute('autoplay'); mark.pause();
+    mark.addEventListener('loadeddata', function () { try { mark.currentTime = 0.5; } catch (e) {} }, { once: true });
+  }
+
+  setTab(location.hash === '#reimb' ? 'reimb' : 'schedule');
+  setInterval(function () { if (!$('tab-schedule').hidden && !document.querySelector('dialog[open]')) renderToday(); }, 60000);
+})();
+</script>
+</body>
+</html>
